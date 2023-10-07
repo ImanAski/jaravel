@@ -10,6 +10,11 @@ class TherapistController extends Controller
 {
     public function index() {
         $therapists = Therapists::all();
+        if (count($therapists) == 0) {
+            return response()->json([
+                'messaeg' => 'Not found',
+            ], 404);
+        }
         return response()->json($therapists);
     }
 

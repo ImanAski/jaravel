@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HandoutController;
+use App\Http\Controllers\LibraryBgController;
 use App\Http\Controllers\TherapistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,8 @@ Route::get('/handouts/{id}', [HandoutController::class, 'show'])->name('handouts
 // * Therapists
 Route::get('/therapists', [TherapistController::class, 'index'])->name('therapists.all');
 Route::get('/therapists/{id}', [TherapistController::class, 'show'])->name('therapists.show');
+
+// * Library Backgrounds
+Route::get('/librarybg', [LibraryBgController::class, 'index'])->name('librarybg.all');
+Route::get('/librarybg/{id}', [LibraryBgController::class, 'show'])->name('librarybg.show');
+
