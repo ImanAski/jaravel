@@ -11,6 +11,12 @@ class CourseController extends Controller
     //
     public function index() {
         $courses = Courses::all();
+        foreach ($courses as $course) {
+            if(!filter_var($course->image, FILTER_VALIDATE_URL))
+            {
+                $course->image = url('storage/' . trim($course->image, '/'));
+            }
+        }
         return response()->json($courses);
     }
 
@@ -21,6 +27,10 @@ class CourseController extends Controller
             return response()->json([
                 'message' => 'Not found'
             ], 404);
+        }
+        if(!filter_var($course->image, FILTER_VALIDATE_URL))
+        {
+            $course->image = url('storage/' . trim($course->image, '/'));
         }
         return response()->json($course);
     }

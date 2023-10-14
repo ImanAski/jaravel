@@ -15,6 +15,13 @@ class TherapistController extends Controller
                 'messaeg' => 'Not found',
             ], 404);
         }
+
+        foreach ($therapists as $therapist) {
+            if(!filter_var($therapist->image, FILTER_VALIDATE_URL))
+            {
+                $therapist->image = url('storage/' . trim($therapist->image, '/'));
+            }
+        }
         return response()->json($therapists);
     }
 
@@ -25,6 +32,10 @@ class TherapistController extends Controller
             return response()->json([
                 'message' => 'Not found',
             ], 404);
+        }
+        if(!filter_var($therapist->image, FILTER_VALIDATE_URL))
+        {
+            $therapist->image = url('storage/' . trim($therapist->image, '/'));
         }
 
         return response()->json($therapist);
