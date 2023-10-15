@@ -31,6 +31,8 @@ class HandoutsResource extends Resource
                 FileUpload::make('image')->required()->image()->imageEditor(),
                 TextInput::make('name')->required(),
                 TextInput::make('description')->required(),
+                TextInput::make('price')->required(),
+                TextInput::make('discount')->default(null),
             ]);
     }
 
