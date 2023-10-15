@@ -32,9 +32,9 @@ class CoursesResource extends Resource
             ->schema([
                 //
                 FileUpload::make('image')->required()->image()->imageEditor(),
+                FileUpload::make('title_image')->required()->image()->imageEditor(),
                 TextInput::make('name')->required(),
                 TextInput::make('description')->required(),
-                TextInput::make('title_image')->required(),
                 TextInput::make('tutor')->required(),
                 DateTimePicker::make('time')->required()->jalali(),
                 TextInput::make('price')->required(),
@@ -48,6 +48,7 @@ class CoursesResource extends Resource
             ->columns([
                 TextColumn::make('id')->sortable(),
                 ImageColumn::make('image'),
+                ImageColumn::make('title_image'),
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('description')->searchable(),
                 TextColumn::make('created_at')->sortable()->jalaliDateTime(),
