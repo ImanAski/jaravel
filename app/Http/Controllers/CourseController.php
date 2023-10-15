@@ -16,6 +16,11 @@ class CourseController extends Controller
             {
                 $course->image = url('storage/' . trim($course->image, '/'));
             }
+
+            if(!filter_var($course->title_image, FILTER_VALIDATE_URL))
+            {
+                $course->title_image = url('storage/' . trim($course->title_image, '/'));
+            }
         }
         return response()->json($courses);
     }
