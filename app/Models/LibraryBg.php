@@ -13,5 +13,5 @@ class LibraryBg extends Model implements HasMedia
 
     protected $table = 'library_bgs';
 
-    protected $fillable = ['backgound'];
+    protected $fillable = ['background'];
 }
