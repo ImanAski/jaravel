@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HandoutController;
 use App\Http\Controllers\LibraryBgController;
+use App\Http\Controllers\LibraryButtonsController;
 use App\Http\Controllers\TherapistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,3 +40,6 @@ Route::get('/therapists/{id}', [TherapistController::class, 'show'])->name('ther
 Route::get('/librarybg', [LibraryBgController::class, 'index'])->name('librarybg.all');
 Route::get('/librarybg/{id}', [LibraryBgController::class, 'show'])->name('librarybg.show');
 
+
+// * Library Buttons
+Route::get('/librarybuttons', [LibraryButtonsController::class, 'index'])->name('librarybuttons.all');
