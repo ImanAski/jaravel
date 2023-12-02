@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\BannersController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HandoutController;
 use App\Http\Controllers\LibraryBgController;
 use App\Http\Controllers\LibraryButtonsController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\TherapistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,3 +45,14 @@ Route::get('/librarybg/{id}', [LibraryBgController::class, 'show'])->name('libra
 
 // * Library Buttons
 Route::get('/librarybuttons', [LibraryButtonsController::class, 'index'])->name('librarybuttons.all');
+
+
+// * Banners 
+Route::get('/banners', [BannersController::class, 'index'])->name('banners.all');
+Route::get('/banners/{id}', [BannersController::class, 'show'])->name('banners.show');
+
+
+// * Pages
+Route::get('/pages', [PagesController::class, 'index'])->name('pages.all');
+Route::get('/pages/{slug}', [PagesController::class, 'slug'])->name('pages.slug');
+Route::get('/pagesWithId/{id}', [PagesController::class, 'show'])->name('pages.show');
