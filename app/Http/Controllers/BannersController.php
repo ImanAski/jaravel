@@ -29,4 +29,25 @@ class BannersController extends Controller
         return response()->json($banner);
     }
 
+    public function showBySection(int $page, int $section) {
+        $banner = Banners::query()
+            ->where('page', '=', $page)
+            ->where('section', '=', $section)
+            ->orderBy('updated_at', 'desc')
+            ->first();
+
+        if ($banner == null) {
+            return response()->json([
+                'message' => 'not found'
+            ], 404);
+        }
+
+        if (!filter_var($banner->image, FILTER_VALIDATE_URL))
+        {
+            $banner->image = url('storage/' . trim($banner->image, '/'));
+            $banner->title_image = url('sotrage/', trim($banner->title_image, '/'));
+        }
+        return response()->json($banner);
+    }
+
 }

@@ -47,9 +47,10 @@ Route::get('/librarybg/{id}', [LibraryBgController::class, 'show'])->name('libra
 Route::get('/librarybuttons', [LibraryButtonsController::class, 'index'])->name('librarybuttons.all');
 
 
-// * Banners 
+// * Banners
 Route::get('/banners', [BannersController::class, 'index'])->name('banners.all');
-Route::get('/banners/{id}', [BannersController::class, 'show'])->name('banners.show');
+Route::get('/banners/{id}', [BannersController::class, 'show'])->where('id', '[0-9]+')->name('banners.show');
+Route::get('/banners/{page}/{section}', [BannersController::class, 'showBySection'])->where('page', '[0-9]+')->where('section', '[0-9]+')->name('banners.showBySection');
 
 
 // * Pages
