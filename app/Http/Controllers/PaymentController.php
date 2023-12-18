@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helpers\ZarinpalPayment;
+use App\Http\Helpers\PayHelper;
 use App\Models\Payment;
 use Evryn\LaravelToman\CallbackRequest;
 use Evryn\LaravelToman\Facades\Toman;
@@ -10,45 +10,19 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+
+    // For future programmer reading this note. currently I hate my life. I miss my girl. I wish I was dead. please don't swear to me when reading my fucked up code. thanks man.
     public function pay(Request $request) {
         // Todo add the pay logic
 
-
         $request->validate([
-            'amount' => 'numeric',
+            'amount' => 'numeric|required',
             'description' => 'string|required',
         ]);
 
-        $user = $request->user();
-        $pay_request = Toman::amount($request->amount)
-             ->description($request->description)
-             ->callback(route('payment.verify'))
-//             ->mobile('09350000000')
-             ->email($user->email)
-            ->request();
+        $pay_helper = new PayHelper($request->user(), $request->amount, $request->description);
 
-        if ($pay_request->successful()) {
-            $transaction_id = $pay_request->transactionId();
-            $payment = new Payment();
-
-            $payment->type = 1;
-            $payment->user_id = $user->id;
-            $payment->status = 0;
-            $payment->amount = $request->amount;
-            $payment->transaction_id = $transaction_id;
-
-            $payment->save();
-            // Store created transaction details for verification
-
-            return $pay_request->pay()->GetTargetUrl(); // Redirect to payment URL
-        }
-
-        if ($pay_request->failed()) {
-            // Handle transaction request failure; Probably showing proper error to user.
-            return response()->json([
-                'message' => $pay_request->messages(),
-            ], 403);
-        }
+        return $pay_helper->pay();
     }
 
 
