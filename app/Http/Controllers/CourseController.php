@@ -8,7 +8,11 @@ use Spatie\FlareClient\Http\Exceptions\NotFound;
 
 class CourseController extends Controller
 {
-    //
+    /**
+     * get all courses
+     *
+     * @return [json] list of course objects
+     */
     public function index() {
         $courses = Courses::all();
         foreach ($courses as $course) {
@@ -25,6 +29,13 @@ class CourseController extends Controller
         return response()->json($courses);
     }
 
+    /**
+     * Get a course by Id
+     *
+     * @param [int] id
+     *
+     * @return [json] course object
+     */
     public function show(int $id) {
         $course = Courses::where('id', $id)->first();
 
@@ -38,5 +49,22 @@ class CourseController extends Controller
             $course->image = url('storage/' . trim($course->image, '/'));
         }
         return response()->json($course);
+    }
+
+    public function enrollUserInCourse(Request $request, $courseId) {
+        $course = Courses::find($courseId);
+
+        if ($course == null) {
+            return response()->json([
+                'message' => 'Not Found',
+            ], 404);
+        }
+
+        $user = $request->user();
+        $user->enrolledCourses()->attach($course);
+
+        return response()->json([
+            'message' => 'Enrolled in the course'
+        ], 200);
     }
 }

@@ -13,4 +13,9 @@ class Courses extends Model implements HasMedia
     use InteractsWithMedia;
     protected $table = 'courses';
     protected $fillable = ['name', 'description', 'image', 'title_image', 'tutor', 'time', 'price'];
+
+    public function enrolledUsers()
+    {
+        return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id')->withTimestamps();
+    }
 }

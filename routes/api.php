@@ -7,8 +7,11 @@ use App\Http\Controllers\LibraryBgController;
 use App\Http\Controllers\LibraryButtonsController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\TherapistController;
+use App\Http\Controllers\ProfilesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TokenController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +23,27 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/generate_token', [TokenController::class, 'generate_token'])->name('token.generate');
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', [TokenController::class, 'login']);
+    Route::post('register', [TokenController::class, 'register']);
 
+    Route::group(['middleware' => 'auth:sanctum'], function() {
+      Route::get('logout', [TokenController::class, 'logout']);
+    //   Route::get('user', [AuthController::class, 'user']);
+    });
+});
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->post('/pay', [PaymentController::class, 'pay'])->name('payment.pay');
+Route::get('/pay/verify', [PaymentController::class, 'verify'])->name('payment.verify');
+
 // * Courses
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.all');
 Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+Route::middleware('auth:sanctum')->post('/courses/{courseId}/enroll', [CourseController::class, 'enrollUserInCourse'])->name('course.enroll');
 
 
 // * Handouts
@@ -57,3 +73,7 @@ Route::get('/banners/{page}/{section}', [BannersController::class, 'showBySectio
 Route::get('/pages', [PagesController::class, 'index'])->name('pages.all');
 Route::get('/pages/{slug}', [PagesController::class, 'slug'])->name('pages.slug');
 Route::get('/pagesWithId/{id}', [PagesController::class, 'show'])->name('pages.show');
+
+// * Profile
+Route::get('/profile/{id}', [ProfilesController::class, 'show'])->name('profile.show');
+Route::post('/profile/update', [ProfilesController::class, 'update'])->name('profil.update');

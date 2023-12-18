@@ -33,6 +33,7 @@ class BannersController extends Controller
         $banner = Banners::query()
             ->where('page', '=', $page)
             ->where('section', '=', $section)
+            ->where('status', '=', true)
             ->orderBy('updated_at', 'desc')
             ->first();
 
